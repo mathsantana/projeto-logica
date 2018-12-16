@@ -1,0 +1,35 @@
+MODULE funcionario(sala, acesso)
+
+ASSIGN
+	next(sala) := case
+			sala = fora: {fora, seguro};
+			sala = seguro & acesso = seguro: {fora, seguro};
+			sala = seguro & (acesso = critico | acesso = confidencial): {fora, seguro, critico};
+			sala = critico & acesso = critico: {seguro, critico};
+			sala = critico & acesso = confidencial: {seguro, critico, confidencial};
+			sala = confidencial: {critico, confidencial};
+			TRUE: sala;
+
+			esac;
+	next(acesso) := case
+			sala = fora: {seguro, critico, confidencial};
+			TRUE: acesso;
+			
+			esac;
+
+MODULE sala
+
+VAR
+
+	state: {fora, seguro, critico, confidencial};
+INIT
+	state = fora;
+
+
+MODULE main
+
+VAR 
+
+acesso: {seguro, critico, confidencial};
+s: sala;
+f: funcionario(s.state, acesso);
