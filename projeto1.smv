@@ -1,0 +1,34 @@
+MODULE funcionario(acesso)
+
+VAR 
+
+    sala: {fora, seguro, critico, confidencial};
+
+INIT
+    sala = fora;
+
+ASSIGN
+	next(sala) := case
+			sala = fora: {fora, seguro};
+			sala = seguro & acesso = seguro: {fora, seguro};
+			sala = seguro & (acesso = critico | acesso = confidencial): {fora, seguro, critico};
+			sala = critico & acesso = critico: {seguro, critico};
+			sala = critico & acesso = confidencial: {seguro, critico, confidencial};
+			sala = confidencial: {critico, confidencial};
+			TRUE: sala;
+
+			esac;
+	next(acesso) := acesso;
+
+
+MODULE main
+
+VAR 
+
+a1: seguro;
+a2: critico;
+a3: confidencial;
+
+f1: process funcionario(a1);
+f2: process funcionario(a2);
+f3: process funcionario(a3); 
