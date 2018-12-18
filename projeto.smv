@@ -1,4 +1,11 @@
-MODULE funcionario(sala, acesso)
+MODULE funcionario(acesso)
+
+VAR 
+
+    sala: {fora, seguro, critico, confidencial};
+
+INIT
+    sala = fora;
 
 ASSIGN
 	next(sala) := case
@@ -11,25 +18,21 @@ ASSIGN
 			TRUE: sala;
 
 			esac;
-	next(acesso) := case
-			sala = fora: {seguro, critico, confidencial};
-			TRUE: acesso;
-			
-			esac;
-
-MODULE sala
-
-VAR
-
-	state: {fora, seguro, critico, confidencial};
-INIT
-	state = fora;
-
+FAIRNESS
+	running;
 
 MODULE main
 
 VAR 
 
-acesso: {seguro, critico, confidencial};
-s: sala;
-f: funcionario(s.state, acesso);
+a1: {seguro};
+a2: {critico};
+a3: {confidencial};
+
+f1: process funcionario(a1);
+f2: process funcionario(a2);
+f3: process funcionario(a3);
+
+LTLSPEC G !(f1.sala = confidencial)
+LTLSPEC G !(f1.sala = critico)
+LTLSPEC G !(f2.sala = confidencial)
