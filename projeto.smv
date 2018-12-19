@@ -33,6 +33,6 @@ f1: process funcionario(a1);
 f2: process funcionario(a2);
 f3: process funcionario(a3);
 
-LTLSPEC G !(f1.sala = confidencial)
-LTLSPEC G !(f1.sala = critico)
-LTLSPEC G !(f2.sala = confidencial)
+SPEC !(EF (f1.sala = confidencial))
+SPEC !(EF (f1.sala = critico))
+SPEC !(EF (f2.sala = confidencial))
