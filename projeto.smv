@@ -36,3 +36,10 @@ f3: process funcionario(a3);
 SPEC !(EF (f1.sala = confidencial))
 SPEC !(EF (f1.sala = critico))
 SPEC !(EF (f2.sala = confidencial))
+SPEC EF (f2.sala = critico)
+SPEC EF (f3.sala = confidencial)
+SPEC EX (f1.sala = seguro)
+SPEC EX (f2.sala = seguro)
+SPEC !(EX (f2.sala = critico))
+SPEC E [f1.sala = fora U f1.sala = seguro]
+SPEC !(E [f2.sala = fora U f2.sala = critico])
